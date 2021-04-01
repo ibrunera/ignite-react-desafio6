@@ -61,10 +61,6 @@
     & + strong {
       margin-top: 2rem;
     }
-
-    &:last-child {
-      //margin-bottom: 2rem;
-    }
   }
 }
 
@@ -80,16 +76,21 @@
   justify-content: space-between;
   border: 5px white;
   border-color: aqua;
-
+  text-align: left;
   margin-bottom: 5rem;
   p {
     color: var(--heading);
     font-size: 1.125rem;
     font-weight: 400;
+    margin-bottom: 0.5rem;
   }
 
   span {
     color: var(--highlight);
     font-weight: 600;
+  }
+
+  & div:last-child {
+    text-align: right;
   }
 }
