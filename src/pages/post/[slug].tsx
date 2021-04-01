@@ -75,6 +75,9 @@ export default function Post({ post }: PostProps): JSX.Element {
                 <FiClock />
                 <span>{readingTime} min</span>
               </div>
+              <div className={styles.editWhen}>
+                <span>* editado em 19 Mar 2021, as 15:49</span>
+              </div>
               {post.data.content.map(content => (
                 <div key={content.heading}>
                   <strong>{content.heading}</strong>
