@@ -9,6 +9,7 @@ import { RichText } from 'prismic-dom';
 import Header from '../../components/Header';
 import { getPrismicClient } from '../../services/prismic';
 import styles from './post.module.scss';
+import Comments from '../../components/Comments';
 
 interface Post {
   first_publication_date: string | null;
@@ -83,6 +84,22 @@ export default function Post({ post }: PostProps): JSX.Element {
                 </>
               ))}
             </article>
+            <div className={styles.divider} />
+            <div className={styles.postNav}>
+              <div>
+                <a href="/">
+                  <p>Como utilizar hooks</p>
+                  <span>Post anterior</span>
+                </a>
+              </div>
+              <div>
+                <a href="/">
+                  <p>Como utilizar hooks</p>
+                  <span>Próximo post</span>
+                </a>
+              </div>
+            </div>
+            <Comments />
           </main>
         </>
       )}

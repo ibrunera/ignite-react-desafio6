@@ -12,6 +12,10 @@
 .posts {
   text-align: justify;
 
+  &:last-child {
+    margin-bottom: 8rem;
+  }
+
   a {
     display: flex;
     flex-direction: column;
@@ -68,5 +72,6 @@
     margin-top: 4rem;
     font-size: 1.125rem;
     line-height: 0.36125rem;
+    //margin-bottom: 5rem;
   }
 }

@@ -61,5 +61,35 @@
     & + strong {
       margin-top: 2rem;
     }
+
+    &:last-child {
+      //margin-bottom: 2rem;
+    }
+  }
+}
+
+.divider {
+  border-top: 1px solid var(--body);
+  margin-top: 3.75rem;
+  margin-bottom: 3rem;
+  opacity: 0.1;
+}
+
+.postNav {
+  display: flex;
+  justify-content: space-between;
+  border: 5px white;
+  border-color: aqua;
+
+  margin-bottom: 5rem;
+  p {
+    color: var(--heading);
+    font-size: 1.125rem;
+    font-weight: 400;
+  }
+
+  span {
+    color: var(--highlight);
+    font-weight: 600;
   }
 }
