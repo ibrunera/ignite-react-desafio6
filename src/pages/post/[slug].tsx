@@ -59,7 +59,7 @@ export default function Post({ post }: PostProps): JSX.Element {
           <main className={styles.container}>
             <article className={styles.content}>
               <h1>{post.data.title}</h1>
-              <div>
+              <div className={styles.label}>
                 <FiCalendar />
                 <time>
                   {format(
@@ -76,12 +76,12 @@ export default function Post({ post }: PostProps): JSX.Element {
                 <span>{readingTime} min</span>
               </div>
               {post.data.content.map(content => (
-                <>
+                <div>
                   <strong key={content.heading}>{content.heading}</strong>
                   {content.body.map(body => (
                     <p key={body.text.length}>{body.text}</p>
                   ))}
-                </>
+                </div>
               ))}
             </article>
             <div className={styles.divider} />
