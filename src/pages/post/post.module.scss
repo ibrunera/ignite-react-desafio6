@@ -1,1 +1,65 @@
-// TODO
+.banner {
+  img {
+    width: 100vw;
+    max-height: 400px;
+    margin: 0;
+  }
+}
+
+.container {
+  max-width: 721px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  margin-bottom: 10rem;
+}
+
+.content {
+  text-align: justify;
+
+  h1 {
+    margin-top: 5rem;
+    font-size: 3rem;
+
+    //Common
+    color: var(--heading);
+    font-weight: 700;
+  }
+
+  div {
+    margin: 1.5rem 0 2rem 0;
+    display: flex;
+    align-items: center;
+    color: var(--info);
+    font-size: 0.8rem;
+
+    time {
+      display: block;
+    }
+
+    span,
+    time {
+      display: block;
+      margin: 0.5rem;
+    }
+  }
+
+  strong {
+    color: var(--heading);
+    display: block;
+    margin-bottom: 3rem;
+    font-weight: 700;
+    font-size: 2.25rem;
+    line-height: 3.15rem;
+  }
+
+  p {
+    margin-top: 1.5rem;
+    font-size: 1.125rem;
+    line-height: 1.575rem;
+    color: var(--body);
+
+    & + strong {
+      margin-top: 2rem;
+    }
+  }
+}
