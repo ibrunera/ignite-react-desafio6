@@ -76,8 +76,8 @@ export default function Post({ post }: PostProps): JSX.Element {
                 <span>{readingTime} min</span>
               </div>
               {post.data.content.map(content => (
-                <div>
-                  <strong key={content.heading}>{content.heading}</strong>
+                <div key={content.heading}>
+                  <strong>{content.heading}</strong>
                   {content.body.map(body => (
                     <p key={body.text.length}>{body.text}</p>
                   ))}
