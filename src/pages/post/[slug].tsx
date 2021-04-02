@@ -13,6 +13,7 @@ import Comments from '../../components/Comments';
 
 interface Post {
   first_publication_date: string | null;
+  last_publication_date: string | null;
   data: {
     title: string;
     banner: {
@@ -76,7 +77,18 @@ export default function Post({ post }: PostProps): JSX.Element {
                 <span>{readingTime} min</span>
               </div>
               <div className={styles.editWhen}>
-                <span>* editado em 19 Mar 2021, as 15:49</span>
+                <span>
+                  * editado em
+                  <time>
+                    {format(
+                      new Date(post.last_publication_date),
+                      " dd MMM yyyy, 'às' H:mm",
+                      {
+                        locale: ptBR,
+                      }
+                    )}
+                  </time>
+                </span>
               </div>
               {post.data.content.map(content => (
                 <div key={content.heading}>
@@ -134,6 +146,7 @@ export const getStaticProps: GetStaticProps = async context => {
 
   const post = {
     first_publication_date: response.first_publication_date,
+    last_publication_date: response.last_publication_date,
     data: response.data,
     uid: response.uid,
   };
