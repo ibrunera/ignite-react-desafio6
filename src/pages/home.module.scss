@@ -75,3 +75,18 @@
     //margin-bottom: 5rem;
   }
 }
+.preview {
+  a {
+    font-weight: 600;
+    font-size: 1.125rem;
+    margin-top: 5.5rem;
+    margin-bottom: 6.625rem;
+    display: flex;
+    background: var(--heading);
+    width: 700px;
+    height: 58px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+  }
+}

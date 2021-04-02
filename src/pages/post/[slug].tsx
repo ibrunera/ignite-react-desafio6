@@ -1,11 +1,13 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
+
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import Prismic from '@prismicio/client';
 import { useRouter } from 'next/router';
 import { RichText } from 'prismic-dom';
+import Link from 'next/link';
 import Header from '../../components/Header';
 import { getPrismicClient } from '../../services/prismic';
 import styles from './post.module.scss';
@@ -31,9 +33,17 @@ interface Post {
 
 interface PostProps {
   post: Post;
+  prevPost: { uid: string; title: string };
+  nextPost: { uid: string; title: string };
+  preview: boolean;
 }
 
-export default function Post({ post }: PostProps): JSX.Element {
+export default function Post({
+  post,
+  prevPost,
+  nextPost,
+  preview,
+}: PostProps): JSX.Element {
   const { isFallback } = useRouter();
 
   const words = post?.data.content
@@ -55,7 +65,7 @@ export default function Post({ post }: PostProps): JSX.Element {
       ) : (
         <>
           <div className={styles.banner}>
-            <img src={post.data.banner.url} alt="banner" />
+            <img src={post?.data.banner.url} alt="banner" />
           </div>
           <main className={styles.container}>
             <article className={styles.content}>
@@ -64,7 +74,7 @@ export default function Post({ post }: PostProps): JSX.Element {
                 <FiCalendar />
                 <time>
                   {format(
-                    new Date(post.first_publication_date),
+                    new Date(post?.first_publication_date),
                     'dd MMM yyyy',
                     {
                       locale: ptBR,
@@ -72,7 +82,7 @@ export default function Post({ post }: PostProps): JSX.Element {
                   )}
                 </time>
                 <FiUser />
-                <span>{post.data.author}</span>
+                <span>{post?.data.author}</span>
                 <FiClock />
                 <span>{readingTime} min</span>
               </div>
@@ -81,7 +91,7 @@ export default function Post({ post }: PostProps): JSX.Element {
                   * editado em
                   <time>
                     {format(
-                      new Date(post.last_publication_date),
+                      new Date(post?.last_publication_date),
                       " dd MMM yyyy, 'às' H:mm",
                       {
                         locale: ptBR,
@@ -102,19 +112,30 @@ export default function Post({ post }: PostProps): JSX.Element {
             <div className={styles.divider} />
             <div className={styles.postNav}>
               <div>
-                <a href="/">
-                  <p>Como utilizar hooks</p>
-                  <span>Post anterior</span>
-                </a>
+                {prevPost.uid && (
+                  <a href={prevPost.uid}>
+                    <p>{prevPost.title}</p>
+                    <span>Post anterior</span>
+                  </a>
+                )}
               </div>
               <div>
-                <a href="/">
-                  <p>Como utilizar hooks</p>
-                  <span>Próximo post</span>
-                </a>
+                {nextPost.uid && (
+                  <a href={nextPost.uid}>
+                    <p>{nextPost.title}</p>
+                    <span>Próximo post</span>
+                  </a>
+                )}
               </div>
             </div>
             <Comments />
+            {preview && (
+              <aside className={styles.preview}>
+                <Link href="/api/exit-preview">
+                  <a>Sair do modo Preview</a>
+                </Link>
+              </aside>
+            )}
           </main>
         </>
       )}
@@ -138,11 +159,51 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async context => {
-  const { slug } = context.params;
+export const getStaticProps: GetStaticProps = async ({
+  params,
+  preview = false,
+  previewData,
+}) => {
+  const { slug } = params;
   const prismic = getPrismicClient();
 
-  const response = await prismic.getByUID('posts', String(slug), {});
+  const response = await prismic.getByUID('posts', String(slug), {
+    ref: previewData?.ref ?? null,
+  });
+
+  let nextPost = {};
+  let prevPost = {};
+
+  if (!preview) {
+    const prevPostResponse = await prismic.query(
+      Prismic.Predicates.dateBefore(
+        'document.first_publication_date',
+        response.first_publication_date
+      )
+    );
+    prevPost = {
+      uid: prevPostResponse?.results[0]?.uid ?? '',
+      title: prevPostResponse?.results[0]?.data.title ?? '',
+    };
+
+    const nextPostResponse = await prismic.query(
+      Prismic.Predicates.dateAfter(
+        'document.first_publication_date',
+        response.first_publication_date
+      )
+    );
+    if (nextPostResponse?.results[1]?.uid) {
+      nextPost = {
+        uid: nextPostResponse?.results[1]?.uid ?? '',
+        title: nextPostResponse?.results[1]?.data.title ?? '',
+      };
+    } else {
+      nextPost = {
+        uid: nextPostResponse?.results[0]?.uid ?? '',
+        title: nextPostResponse?.results[0]?.data.title ?? '',
+      };
+    }
+  }
 
   const post = {
     first_publication_date: response.first_publication_date,
@@ -151,10 +212,12 @@ export const getStaticProps: GetStaticProps = async context => {
     uid: response.uid,
   };
 
-  // TODO
   return {
     props: {
       post,
+      nextPost,
+      prevPost,
+      preview,
     },
   };
 };

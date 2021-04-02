@@ -69,8 +69,6 @@
   font-size: 0.875rem;
   font-style: italic;
   line-height: 1rem;
-  span {
-  }
 }
 
 .divider {
@@ -87,6 +85,8 @@
   border-color: aqua;
   text-align: left;
   margin-bottom: 5rem;
+  width: 100%;
+  text-align: left;
   p {
     color: var(--heading);
     font-size: 1.125rem;
@@ -100,6 +100,24 @@
   }
 
   & div:last-child {
+    width: 300px;
+    align-self: flex-end;
     text-align: right;
+  }
+}
+
+.preview {
+  a {
+    font-weight: 600;
+    font-size: 1.125rem;
+    margin-top: 5.5rem;
+    margin-bottom: 6.625rem;
+    display: flex;
+    background: var(--heading);
+    width: 700px;
+    height: 58px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
   }
 }
